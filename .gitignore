@@ -55,3 +55,10 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Editor files
+*~
+\#*\#
+
+# pip-compile generated files
+requirements/*.txt

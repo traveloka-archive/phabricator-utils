@@ -1,0 +1,5 @@
+-r base.txt
+flake8==2.4.1
+ipython==3.2.1
+PyInstaller==2.1
+

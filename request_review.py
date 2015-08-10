@@ -5,9 +5,13 @@ import os
 import sh
 import subprocess
 
-arc_diff = sh.arc.bake("diff", allow_untracked=True, browse=True)
-# arc_diff = sh.echo.bake("arc", "diff")
-git_diff = sh.git.bake("diff-tree", "--no-commit-id", "--name-only", "-r")
+arc_diff = sh.Command._create('arc').bake("diff",
+                                          allow_untracked=True,
+                                          browse=True)
+git_diff = sh.Command._create('git').bake("diff-tree",
+                                          "--no-commit-id",
+                                          "--name-only",
+                                          "-r")
 
 
 def list_changed_files(start, end=None):
