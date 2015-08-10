@@ -1,9 +1,12 @@
 import argparse
-#import fnmatch
+# import fnmatch
 import json
 import os
 import sh
+import subprocess
 
+arc_diff = sh.arc.bake("diff", allow_untracked=True, browse=True)
+# arc_diff = sh.echo.bake("arc", "diff")
 git_diff = sh.git.bake("diff-tree", "--no-commit-id", "--name-only", "-r")
 
 
@@ -58,12 +61,26 @@ def get_commit_owners(start, end=None):
     }
     for f in list_changed_files(start, end):
         print("file: " + f)
-        cur_owners =  get_owners(f)
-        if owners:
+        cur_owners = get_owners(f)
+        if cur_owners:
             owners = merge_owners(owners, cur_owners)
             print("owners found")
     return owners
 
+
+def create_review(start, end=None):
+    owners = get_commit_owners(start, end)
+    _arc_diff = arc_diff
+    # take this off once done testing
+    # only=True)
+    if end != "HEAD":
+        _arc_diff = _arc_diff.bake(head=end)
+    reviewers = ','.join(owners["reviewers"])
+    subs = ','.join(owners["subscribers"])
+    if subs:
+        _arc_diff = _arc_diff.bake(cc=subs)
+    subprocess.call(str(_arc_diff.bake(start, reviewers=reviewers)),
+                    shell=True)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -83,5 +100,5 @@ if __name__ == '__main__':
         last_commit = args.to
     else:
         last_commit = "HEAD"
-    print(get_commit_owners(args.base,
-                            last_commit))
+    create_review(args.base,
+                  last_commit)
