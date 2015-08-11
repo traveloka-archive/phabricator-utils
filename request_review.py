@@ -70,11 +70,9 @@ def get_owners(filename):
         cur_owners = match_owners(owners_filepath, filename)
         if cur_owners:
             owners = merge_owners(owners, cur_owners)
-            return owners
-        else:
-            # try one level up
-            cur_path = cur_dir
-
+        # continue one level up
+        cur_path = cur_dir
+        return owners
 
 def get_commit_owners(start, end=None):
     owners = {
