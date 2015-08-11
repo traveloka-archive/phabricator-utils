@@ -1,11 +1,11 @@
 language: python
 python:
-  - "2.6"
   - "2.7"
   - "3.4"
   
 # install dependencies
 install:
+  - "ln -s /bin/echo /usr/local/bin/arc"
   - "pip install -r requirements.txt"
 
 # run tests
