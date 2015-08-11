@@ -1,0 +1,12 @@
+[ 
+    {
+	"includes": ["*.py", "*.pyx"],
+	"reviewers": ["#python"],
+	"subscribers": []
+    },
+    {
+	"includes": ["*.js", "*.css"],
+	"reviewers": ["#frontend"],
+	"subscribers": ["#design"]
+    }
+]

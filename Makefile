@@ -11,3 +11,5 @@ requirements/dev.txt: requirements/base.txt requirements/dev.in
 dist/request_review: request_review.py
 	pyinstaller -F -s request_review.py
 
+test:
+	python -m unittest discover -s tests --verbose

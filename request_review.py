@@ -72,7 +72,7 @@ def get_owners(filename):
             owners = merge_owners(owners, cur_owners)
         # continue one level up
         cur_path = cur_dir
-        return owners
+    return owners
 
 def get_commit_owners(start, end=None):
     owners = {
