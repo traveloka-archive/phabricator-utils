@@ -60,5 +60,3 @@ target/
 *~
 \#*\#
 
-# pip-compile generated files
-requirements/*.txt
