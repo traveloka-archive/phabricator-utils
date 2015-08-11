@@ -15,4 +15,4 @@ dist/request_review: request_review.py
 	pyinstaller -F -s request_review.py
 
 test:
-	coverage run -m unittest discover -s tests --verbose
+	coverage run --source request_review.py -m unittest discover -s tests --verbose
