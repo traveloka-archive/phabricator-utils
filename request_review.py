@@ -25,10 +25,26 @@ def match_owners(owners_filepath, filename):
     if os.path.exists(owners_filepath):
         with open(owners_filepath, 'r') as f:
             raw_data = json.load(f)
-            return {
-                "reviewers": set(raw_data["reviewers"]),
-                "subscribers": set(raw_data["subscribers"])
-            }
+            # handle simple file format
+            if type(raw_data) == dict:
+                return {
+                    "reviewers": set(raw_data["reviewers"]),
+                    "subscribers": set(raw_data["subscribers"])
+                }
+            else:
+                assert type(raw_data) == list
+                owners = {
+                    "reviewers": set(),
+                    "subscribers": set()
+                }
+                for data in raw_data:
+                    if True:
+                        cur_owners = {
+                            "reviewers": set(data["reviewers"]),
+                            "subscribers": set(data["subscribers"])
+                        }
+                        owners = merge_owners(owners, cur_owners)
+                return owners
     else:
         return None
 
