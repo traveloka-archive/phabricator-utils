@@ -2,11 +2,17 @@ language: python
 python:
   - "2.7"
   - "3.4"
+sudo: false
   
 # install dependencies
 install:
-  - "sudo ln -s /bin/echo /usr/local/bin/arc"
   - "pip install -r requirements/test.txt"
+
+# setup symlink for arc
+before_script:
+  - "mkdir bin"
+  - "ln -s /bin/echo bin/arc"
+  - "export PATH=$PATH:bin/"
 
 # run tests
 script: make test
