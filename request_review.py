@@ -1,5 +1,5 @@
 import argparse
-# import fnmatch
+import fnmatch
 import json
 import os
 import sh
@@ -38,7 +38,9 @@ def match_owners(owners_filepath, filename):
                     "subscribers": set()
                 }
                 for data in raw_data:
-                    if True:
+                    patterns = data["includes"]
+                    if any(fnmatch.fnmatch(filename, pat)
+                           for pat in patterns):
                         cur_owners = {
                             "reviewers": set(data["reviewers"]),
                             "subscribers": set(data["subscribers"])
