@@ -12,12 +12,15 @@ git_diff = sh.Command._create('git').bake("diff-tree",
                                           "--no-commit-id",
                                           "--name-only",
                                           "-r")
+git_merge_base = sh.Command._create('git').bake("merge-base")
 
 
 def list_changed_files(start, end=None):
-    commit_range = start
     if end:
+        commit_range = git_merge_base(start, end).split()[0]
         commit_range += "..%s" % (end,)
+    else:
+        commit_range = start
     return git_diff(commit_range).split()
 
 
@@ -80,11 +83,9 @@ def get_commit_owners(start, end=None):
         "subscribers": set()
     }
     for f in list_changed_files(start, end):
-        print("file: " + f)
         cur_owners = get_owners(f)
         if cur_owners:
             owners = merge_owners(owners, cur_owners)
-            print("owners found")
     return owners
 
 
