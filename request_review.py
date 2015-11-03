@@ -5,14 +5,31 @@ import os
 import sh
 import subprocess
 
+
+class Command(object):
+    def __init__(self, cmd, *args):
+        self._args = [cmd] + list(args)
+
+    def bake(self, arg, *args):
+        self._args += [arg] + list(args)
+        
+def create_command(cmd, *args):
+    _args = [cmd] + list(args)
+
+    def runner(*args):
+        return subprocess.check_output(_args + list(args))
+
+    return runner
+
 arc_diff = sh.Command._create('arc').bake("diff",
                                           allow_untracked=True,
                                           browse=True)
-git_diff = sh.Command._create('git').bake("diff-tree",
-                                          "--no-commit-id",
-                                          "--name-only",
-                                          "-r")
-git_merge_base = sh.Command._create('git').bake("merge-base")
+git_diff = create_command('git',
+                          'diff-tree',
+                          '--no-commit-id',
+                          '--name-only',
+                          '-r')
+git_merge_base = create_command('git', 'merge-base')
 
 
 def list_changed_files(start, end=None):
@@ -76,6 +93,7 @@ def get_owners(filename):
         # continue one level up
         cur_path = cur_dir
     return owners
+
 
 def get_commit_owners(start, end=None):
     owners = {
